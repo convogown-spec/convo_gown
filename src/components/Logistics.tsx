@@ -92,6 +92,16 @@ export default function Logistics({ onRequestQuote }: LogisticsProps) {
                   sizes="(max-width: 960px) 100vw, 50vw"
                   className={styles.image}
                 />
+                <div className={styles.roadOverlay}>
+                  <div className={styles.overlayLeft}>
+                    <span className={styles.overlayTextWhite}>Pan-Kerala Delivery</span>
+                    <span className={styles.overlayTextWhite}>Network</span>
+                  </div>
+                  <div className={styles.overlayRight}>
+                    <span className={styles.overlayTextGold}>48hr</span>
+                    <span className={styles.overlayTextGold}>Guarantee</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
