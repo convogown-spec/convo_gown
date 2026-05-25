@@ -1,0 +1,225 @@
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  background-color: #fdfcf9;
+}
+
+.mainContent {
+  flex-grow: 1;
+}
+
+/* Banner Section */
+.bannerSection {
+  position: relative;
+  background: #050a14; /* Deep midnight */
+  padding: 140px 0 80px;
+  background-image: url("/assets/hero_bg.png");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+
+.bgOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(5, 10, 20, 0.85) 0%, rgba(10, 17, 40, 0.95) 100%);
+  z-index: 1;
+}
+
+.bannerContainer {
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.eyebrow {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #c5a870;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-family: var(--font-serif), serif;
+  font-size: 3.5rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.goldItalic {
+  font-family: var(--font-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #c5a870;
+}
+
+.subtitle {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: rgba(253, 252, 249, 0.7);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2.2rem;
+  }
+  .bannerSection {
+    padding: 120px 0 60px;
+  }
+}
+
+/* Gallery Section */
+.gallerySection {
+  padding: 60px 0 100px;
+  background-color: #fdfcf9;
+}
+
+.container {
+  width: 90%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Tab Rows */
+.tabRow {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  background-color: #ffffff;
+  border: 1.5px solid rgba(10, 17, 40, 0.08);
+  color: #5e6675;
+  padding: 10px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tabBtn:hover {
+  background-color: rgba(197, 168, 112, 0.1);
+  border-color: #c5a870;
+  color: #c5a870;
+}
+
+.activeTab {
+  background-color: #c5a870; /* Gold */
+  border-color: #c5a870;
+  color: #0a1128;
+  box-shadow: 0 4px 14px rgba(197, 168, 112, 0.25);
+}
+
+/* Gallery Grid */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 960px) {
+  .galleryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .galleryGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Card styling */
+.galleryCard {
+  background: #ffffff;
+  border: 1px solid rgba(197, 168, 112, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(10, 17, 40, 0.02);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.galleryCard:hover {
+  box-shadow: 0 20px 45px rgba(10, 17, 40, 0.06);
+  border-color: rgba(197, 168, 112, 0.25);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background-color: #f7f6f2;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.galleryCard:hover .image {
+  transform: scale(1.04);
+}
+
+.categoryTag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: rgba(197, 168, 112, 0.9);
+  color: #0a1128;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 6px 12px;
+  border-radius: 50px;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+/* Card details info */
+.cardInfo {
+  padding: 24px;
+}
+
+.cardTitle {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0a1128;
+  margin-bottom: 6px;
+}
+
+.cardDesc {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.88rem;
+  color: #5e6675;
+  line-height: 1.4;
+  font-weight: 300;
+}

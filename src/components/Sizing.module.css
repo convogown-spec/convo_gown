@@ -1,0 +1,262 @@
+.section {
+  padding: 100px 0;
+  background-color: #fdfcf9;
+}
+
+.container {
+  width: 90%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: left;
+  margin-bottom: 50px;
+  max-width: 600px;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #0a1128;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.goldItalic {
+  font-family: var(--font-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #c5a870;
+}
+
+.description {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: #5e6675;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2.2rem;
+  }
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Portrait Card */
+.portraitCard {
+  background: #ffffff;
+  border: 1px solid rgba(197, 168, 112, 0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(10, 17, 40, 0.02);
+  height: 600px;
+  position: relative;
+}
+
+.portraitImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portraitCard:hover .image {
+  transform: scale(1.03);
+}
+
+@media (max-width: 960px) {
+  .portraitCard {
+    height: 450px;
+  }
+}
+
+/* Right Stack and Cards */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.horizontalCard {
+  background: #ffffff;
+  border: 1px solid rgba(197, 168, 112, 0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(10, 17, 40, 0.02);
+  display: flex;
+  cursor: pointer;
+  height: calc(50% - 12px); /* Perfectly fills the height matching portraitCard */
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.horizontalCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 45px rgba(10, 17, 40, 0.06);
+  border-color: rgba(197, 168, 112, 0.25);
+}
+
+.horizontalImageWrapper {
+  position: relative;
+  width: 200px;
+  background-color: #f7f6f2;
+  flex-shrink: 0;
+}
+
+.horizontalInfo {
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+@media (max-width: 600px) {
+  .horizontalCard {
+    flex-direction: column;
+    height: auto;
+  }
+  .horizontalImageWrapper {
+    width: 100%;
+    height: 180px;
+  }
+  .horizontalInfo {
+    padding: 24px;
+  }
+}
+
+/* Text Stylings */
+.ageEyebrow {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #c5a870; /* Gold */
+  letter-spacing: 0.15rem;
+  margin-bottom: 4px;
+}
+
+.sizeTitle {
+  font-family: var(--font-serif), serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0a1128;
+  margin-bottom: 10px;
+}
+
+.sizeDesc {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.92rem;
+  color: #5e6675;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+/* Sizing Link Button */
+.exploreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #c5a870;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.linkArrow {
+  transition: transform 0.3s ease;
+}
+
+.horizontalCard:hover .exploreLink {
+  color: #b4975f;
+}
+
+.horizontalCard:hover .linkArrow {
+  transform: translate(2px, -2px);
+}
+
+/* University Size Card Portrait Overlay */
+.portraitCard {
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portraitCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 45px rgba(10, 17, 40, 0.06);
+  border-color: rgba(197, 168, 112, 0.25);
+}
+
+.portraitOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px 36px 36px 36px;
+  background: linear-gradient(
+    to top,
+    rgba(10, 17, 40, 0.95) 0%,
+    rgba(10, 17, 40, 0.75) 50%,
+    rgba(10, 17, 40, 0.25) 80%,
+    transparent 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 2;
+  transition: all 0.4s ease;
+  text-align: left;
+}
+
+.portraitCard:hover .portraitOverlay {
+  background: linear-gradient(
+    to top,
+    rgba(10, 17, 40, 0.98) 0%,
+    rgba(10, 17, 40, 0.8) 50%,
+    rgba(10, 17, 40, 0.3) 80%,
+    transparent 100%
+  );
+}
+
+.portraitTitle {
+  font-family: var(--font-serif), serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.portraitDesc {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  margin-bottom: 12px;
+  font-weight: 300;
+}
+
+.portraitCard:hover .linkArrow {
+  transform: translate(2px, -2px);
+}

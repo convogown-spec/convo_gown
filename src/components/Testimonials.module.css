@@ -1,0 +1,180 @@
+.section {
+  padding: 100px 0;
+  background-color: #f7f6f2; /* Soft beige section background */
+  border-top: 1px solid rgba(197, 168, 112, 0.08);
+}
+
+.container {
+  width: 90%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  background: #ffffff;
+  border: 1px solid rgba(197, 168, 112, 0.15);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0a1128;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 3.2rem;
+  font-weight: 500;
+  color: #0a1128;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.goldItalic {
+  font-family: var(--font-serif), serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #c5a870;
+}
+
+.description {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: #5e6675;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 2.2rem;
+  }
+}
+
+/* Testimonials Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Card Styling */
+.card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(197, 168, 112, 0.08);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(10, 17, 40, 0.02);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  box-shadow: 0 20px 45px rgba(10, 17, 40, 0.06);
+  border-color: rgba(197, 168, 112, 0.25);
+}
+
+/* Large Quote Background Decor */
+.quoteIconBox {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  color: rgba(197, 168, 112, 0.08);
+  pointer-events: none;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .quoteIconBox {
+  transform: scale(1.1) rotate(-10deg);
+  color: rgba(197, 168, 112, 0.15);
+}
+
+.starsRow {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.quoteText {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #5e6675;
+  line-height: 1.6;
+  font-weight: 300;
+  margin-bottom: 30px;
+  flex-grow: 1;
+}
+
+/* Profile Row */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px solid rgba(10, 17, 40, 0.04);
+  padding-top: 20px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(197, 168, 112, 0.1);
+  color: #c5a870;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.name {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #0a1128;
+  font-style: normal;
+}
+
+.role {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.82rem;
+  color: #5e6675;
+  font-weight: 400;
+}
+
+.institution {
+  font-weight: 600;
+  color: #c5a870;
+}

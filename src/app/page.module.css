@@ -1,0 +1,11 @@
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  background-color: #fdfcf9;
+}
+
+.mainContent {
+  flex-grow: 1;
+}
