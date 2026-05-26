@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  verification: {
+    google: "jb8rIwmL48CSx8M_7PkbTB2dWKNRD9P5MFQAPbDJt_M",
+  },
   keywords: [
     "convocation gown rental",
     "graduation gown rental",
