@@ -93,7 +93,7 @@ export default function Footer({ onRequestQuote }: FooterProps) {
               <div className={styles.logoGroup} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
                 <div className={styles.logoIcon}>
                   <Image
-                    src="/assets/logo.svg"
+                    src="/assets/logo.png"
                     alt="Convo Gown Logo Badge"
                     width={40}
                     height={40}
@@ -109,7 +109,7 @@ export default function Footer({ onRequestQuote }: FooterProps) {
               <Link href="/" className={styles.logoGroup}>
                 <div className={styles.logoIcon}>
                   <Image
-                    src="/assets/logo.svg"
+                    src="/assets/logo.png"
                     alt="Convo Gown Logo Badge"
                     width={40}
                     height={40}
@@ -197,11 +197,11 @@ export default function Footer({ onRequestQuote }: FooterProps) {
               </li>
               <li>
                 <MessageSquare size={16} className={styles.contactIcon} />
-                <a href="https://wa.me/918891360876?text=Hello%20Convo%20Gown%2C%20I%20would%20like%20to%20inquire%20about%20convocation%20gowns.">WhatsApp Chat Desk</a>
+                <a href="https://wa.me/918891360876?text=Hello%20Convo%20Gown%2C%20I%20am%20contacting%20for%20an%20order%20from%20your%20website.">WhatsApp Chat Desk</a>
               </li>
               <li>
                 <Mail size={16} className={styles.contactIcon} />
-                <a href="mailto:coordination@convogown.com">coordination@convogown.com</a>
+                <a href="mailto:convogown@gmail.com">convogown@gmail.com</a>
               </li>
               <li>
                 <MapPin size={16} className={styles.contactIcon} style={{ alignSelf: "flex-start", marginTop: "2px" }} />

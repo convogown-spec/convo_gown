@@ -26,6 +26,7 @@ def send_email(payload):
     msg['Subject'] = f"Convo Gown Quote Confirmation - {institution}"
     msg['From'] = f"Convo Gown <{from_mail}>"
     msg['To'] = to_mail
+    msg['Cc'] = "sajuhaneef@mbits.ac.in"
     # Also BCC to ourselves so the coordination desk receives it instantly
     msg['Bcc'] = from_mail
 
@@ -207,7 +208,7 @@ def send_email(payload):
                     <span class="office-list">Offices: Kothamangalam | Thrissur | Changanassery</span>
                 </p>
                 <p>
-                    Email: <a href="mailto:coordination@convogown.com">coordination@convogown.com</a> &bull; Phone: <a href="tel:+918891360876">+91 88913 60876</a>
+                    Email: <a href="mailto:convogown@gmail.com">convogown@gmail.com</a> &bull; Phone: <a href="tel:+918891360876">+91 88913 60876</a>
                 </p>
             </div>
         </div>

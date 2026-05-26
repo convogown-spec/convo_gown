@@ -113,7 +113,7 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
           <div className={styles.logoGroup} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
             <div className={styles.logoIcon}>
               <Image
-                src="/assets/logo.svg"
+                src="/assets/logo.png"
                 alt="Convo Gown Badge"
                 width={34}
                 height={34}
@@ -129,7 +129,7 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
           <Link href="/" className={styles.logoGroup}>
             <div className={styles.logoIcon}>
               <Image
-                src="/assets/logo.svg"
+                src="/assets/logo.png"
                 alt="Convo Gown Badge"
                 width={34}
                 height={34}
@@ -151,7 +151,7 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
         {/* Action Buttons */}
         <div className={styles.actionGroup}>
           <a
-            href="https://wa.me/918891360876?text=Hello%20Convo%20Gown%2C%20I%20would%20like%20to%20inquire%20about%20convocation%20gowns."
+            href="https://wa.me/918891360876?text=Hello%20Convo%20Gown%2C%20I%20am%20contacting%20for%20an%20order%20from%20your%20website."
             target="_blank"
             rel="noopener noreferrer"
             className={styles.whatsappBtn}
@@ -183,7 +183,7 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
           
           <div className={styles.drawerActions}>
             <a
-              href="https://wa.me/918891360876"
+              href="https://wa.me/918891360876?text=Hello%20Convo%20Gown%2C%20I%20am%20contacting%20for%20an%20order%20from%20your%20website."
               target="_blank"
               rel="noopener noreferrer"
               className={styles.drawerWhatsapp}

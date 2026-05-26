@@ -189,7 +189,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     <span className={styles.directLabel}>OR REACH US DIRECTLY</span>
                     <div className={styles.directButtons}>
                       <a
-                        href="https://wa.me/918891360876"
+                        href="https://wa.me/918891360876?text=Hello%20Convo%20Gown%2C%20I%20am%20contacting%20for%20an%20order%20from%20your%20website."
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.directWhatsapp}
@@ -198,11 +198,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         <span>WhatsApp</span>
                       </a>
                       <a
-                        href="mailto:hello@convogown.com"
+                        href="mailto:convogown@gmail.com"
                         className={styles.directMail}
                       >
                         <Mail size={14} />
-                        <span>hello@convogown.com</span>
+                        <span>convogown@gmail.com</span>
                       </a>
                     </div>
                   </div>
@@ -218,7 +218,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       id="institution"
                       name="institution"
                       required
-                      placeholder="e.g., Cochin University of Science and Technology"
+                      placeholder=""
                       value={formData.institution}
                       onChange={handleChange}
                     />
@@ -233,7 +233,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         id="name"
                         name="name"
                         required
-                        placeholder="Full name"
+                        placeholder=""
                         value={formData.name}
                         onChange={handleChange}
                       />
@@ -246,7 +246,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         id="phone"
                         name="phone"
                         required
-                        placeholder="+91 XXXXX XXXXX"
+                        placeholder=""
                         value={formData.phone}
                         onChange={handleChange}
                       />
@@ -261,7 +261,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       id="email"
                       name="email"
                       required
-                      placeholder="admin@university.ac.in"
+                      placeholder=""
                       value={formData.email}
                       onChange={handleChange}
                     />
@@ -300,14 +300,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
                   {/* Gown Quantity */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="quantity">Estimated Number of Gowns</label>
+                    <label htmlFor="quantity">Estimated Number of Gowns (Min 5)</label>
                     <input
                       type="number"
                       id="quantity"
                       name="quantity"
                       required
-                      min="1"
-                      placeholder="e.g., 500"
+                      min="5"
+                      placeholder=""
                       value={formData.quantity}
                       onChange={handleChange}
                     />
