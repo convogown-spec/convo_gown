@@ -113,10 +113,10 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
           <div className={styles.logoGroup} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
             <div className={styles.logoIcon}>
               <Image
-                src="/assets/logo.png"
+                src="/assets/logo_v2.png"
                 alt="Convo Gown Badge"
-                width={34}
-                height={34}
+                width={48}
+                height={48}
                 className={styles.badgeImg}
               />
             </div>
@@ -129,10 +129,10 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
           <Link href="/" className={styles.logoGroup}>
             <div className={styles.logoIcon}>
               <Image
-                src="/assets/logo.png"
+                src="/assets/logo_v2.png"
                 alt="Convo Gown Badge"
-                width={34}
-                height={34}
+                width={48}
+                height={48}
                 className={styles.badgeImg}
               />
             </div>

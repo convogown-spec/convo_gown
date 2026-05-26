@@ -93,10 +93,10 @@ export default function Footer({ onRequestQuote }: FooterProps) {
               <div className={styles.logoGroup} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
                 <div className={styles.logoIcon}>
                   <Image
-                    src="/assets/logo.png"
+                    src="/assets/logo_v2.png"
                     alt="Convo Gown Logo Badge"
-                    width={40}
-                    height={40}
+                    width={56}
+                    height={56}
                     className={styles.badgeImg}
                   />
                 </div>
@@ -109,10 +109,10 @@ export default function Footer({ onRequestQuote }: FooterProps) {
               <Link href="/" className={styles.logoGroup}>
                 <div className={styles.logoIcon}>
                   <Image
-                    src="/assets/logo.png"
+                    src="/assets/logo_v2.png"
                     alt="Convo Gown Logo Badge"
-                    width={40}
-                    height={40}
+                    width={56}
+                    height={56}
                     className={styles.badgeImg}
                   />
                 </div>
