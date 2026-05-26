@@ -153,10 +153,6 @@ export default function GalleryPage() {
                       />
                       <span className={styles.categoryTag}>{item.category}</span>
                     </div>
-                    <div className={styles.cardInfo}>
-                      <h3 className={styles.cardTitle}>{item.title}</h3>
-                      <p className={styles.cardDesc}>{item.desc}</p>
-                    </div>
                   </motion.div>
                 ))}
               </AnimatePresence>
