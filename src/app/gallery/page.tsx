@@ -161,7 +161,6 @@ export default function GalleryPage() {
                         sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
                         className={styles.image}
                       />
-                      <span className={styles.categoryTag}>{item.category}</span>
                     </div>
                   </motion.div>
                 ))}
