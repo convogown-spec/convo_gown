@@ -61,7 +61,6 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
       { id: "services", label: "Services", href: "/#services" },
       { id: "logistics", label: "Logistics", href: "/#logistics" },
       { id: "sizing", label: "Sizing", href: "/#sizing" },
-      { id: "about", label: "About", href: "/#about" },
     ];
 
     return (
