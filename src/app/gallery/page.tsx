@@ -14,40 +14,40 @@ export default function GalleryPage() {
   const [galleryItems, setGalleryItems] = useState<Array<{ title: string; category: string; image: string }>>([
     {
       title: "CUSAT Convocation Day",
-      category: "Ceremonies",
-      image: "/assets/gallery/Ceremonies/hero_bg.png",
+      category: "Happy Customers",
+      image: "/assets/gallery/Happy Customers/hero_bg.png",
     },
     {
       title: "Calicut Academic Hooding",
-      category: "Ceremonies",
-      image: "/assets/gallery/Ceremonies/hood.png",
+      category: "Our Assets",
+      image: "/assets/gallery/Our Assets/hood.png",
     },
     {
       title: "Embroidered Satin Stoles",
-      category: "Gowns",
-      image: "/assets/gallery/Gowns/stole.png",
+      category: "Our Assets",
+      image: "/assets/gallery/Our Assets/stole.png",
     },
     {
       title: "Caps Flying High",
-      category: "Branding",
-      image: "/assets/gallery/Branding/cap.png",
+      category: "Our Assets",
+      image: "/assets/gallery/Our Assets/cap.png",
     },
     {
       title: "Pre-School Robes",
-      category: "Gowns",
-      image: "/assets/gallery/Gowns/kid.png",
+      category: "Our Assets",
+      image: "/assets/gallery/Our Assets/kid.png",
     },
     {
       title: "Stage Branding Setup",
-      category: "Branding",
-      image: "/assets/gallery/Branding/branding.jpg",
+      category: "Our Assets",
+      image: "/assets/gallery/Our Assets/branding.jpg",
     },
   ]);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const categories = ["All", "Ceremonies", "Gowns", "Branding"];
+  const categories = ["All", "Our Assets", "Happy Customers"];
 
   useEffect(() => {
     async function fetchPhotos() {

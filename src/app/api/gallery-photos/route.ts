@@ -5,7 +5,7 @@ import path from "path";
 export async function GET() {
   try {
     const galleryPath = path.resolve(process.cwd(), "public", "assets", "gallery");
-    const categories = ["Ceremonies", "Gowns", "Branding"];
+    const categories = ["Our Assets", "Happy Customers"];
     const items: Array<{ title: string; category: string; image: string }> = [];
 
     for (const category of categories) {
