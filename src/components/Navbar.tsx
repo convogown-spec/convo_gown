@@ -115,8 +115,8 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
               <Image
                 src="/assets/logo_v2.png"
                 alt="Convo Gown Badge"
-                width={48}
-                height={48}
+                width={64}
+                height={64}
                 className={styles.badgeImg}
               />
             </div>
@@ -131,8 +131,8 @@ export default function Navbar({ onRequestQuote }: NavbarProps) {
               <Image
                 src="/assets/logo_v2.png"
                 alt="Convo Gown Badge"
-                width={48}
-                height={48}
+                width={64}
+                height={64}
                 className={styles.badgeImg}
               />
             </div>
