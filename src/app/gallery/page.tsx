@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Navbar from "@/components/Navbar";
@@ -11,50 +11,60 @@ import styles from "./page.module.css";
 export default function GalleryPage() {
   const [activeTab, setActiveTab] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [galleryItems, setGalleryItems] = useState<Array<{ title: string; category: string; image: string }>>([
+    {
+      title: "CUSAT Convocation Day",
+      category: "Ceremonies",
+      image: "/assets/gallery/Ceremonies/hero_bg.png",
+    },
+    {
+      title: "Calicut Academic Hooding",
+      category: "Ceremonies",
+      image: "/assets/gallery/Ceremonies/hood.png",
+    },
+    {
+      title: "Embroidered Satin Stoles",
+      category: "Gowns",
+      image: "/assets/gallery/Gowns/stole.png",
+    },
+    {
+      title: "Caps Flying High",
+      category: "Branding",
+      image: "/assets/gallery/Branding/cap.png",
+    },
+    {
+      title: "Pre-School Robes",
+      category: "Gowns",
+      image: "/assets/gallery/Gowns/kid.png",
+    },
+    {
+      title: "Stage Branding Setup",
+      category: "Branding",
+      image: "/assets/gallery/Branding/branding.jpg",
+    },
+  ]);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
   const categories = ["All", "Ceremonies", "Gowns", "Branding"];
 
-  const galleryItems = [
-    {
-      title: "CUSAT Convocation Day",
-      category: "Ceremonies",
-      image: "/assets/hero_bg.png",
-      desc: "Mass distribution and ceremony grid logistics for Cochin University.",
-    },
-    {
-      title: "Calicut Academic Hooding",
-      category: "Ceremonies",
-      image: "/assets/hood.png",
-      desc: "Discipline-coded academic hoods for Calicut University candidates.",
-    },
-    {
-      title: "Embroidered Satin Stoles",
-      category: "Gowns",
-      image: "/assets/stole.png",
-      desc: "Custom crest embroidery stitched on gold satin stoles.",
-    },
-    {
-      title: "Caps Flying High",
-      category: "Branding",
-      image: "/assets/cap.png",
-      desc: "Zero-failure mortarboards reinforcing the crowning graduation moment.",
-    },
-    {
-      title: "Pre-School Robes",
-      category: "Gowns",
-      image: "/assets/kid.png",
-      desc: "Adorable mini graduation gowns tailor-cut for kindergarten graduates.",
-    },
-    {
-      title: "Stage Branding Setup",
-      category: "Branding",
-      image: "/assets/branding.jpg",
-      desc: "Podiums, banners, and backdrops setup for prestigious events.",
-    },
-  ];
+  useEffect(() => {
+    async function fetchPhotos() {
+      try {
+        const res = await fetch("/api/gallery-photos");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setGalleryItems(data);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load dynamic gallery photos, falling back to defaults.", err);
+      }
+    }
+    fetchPhotos();
+  }, []);
 
   const filteredItems = galleryItems.filter(
     (item) => activeTab === "All" || item.category === activeTab
