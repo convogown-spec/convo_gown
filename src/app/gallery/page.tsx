@@ -8,6 +8,15 @@ import Footer from "@/components/Footer";
 import ContactModal from "@/components/ContactModal";
 import styles from "./page.module.css";
 
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 export default function GalleryPage() {
   const [activeTab, setActiveTab] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,12 +65,15 @@ export default function GalleryPage() {
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
-            setGalleryItems(data);
+            setGalleryItems(shuffleArray(data));
+            return;
           }
         }
       } catch (err) {
         console.error("Failed to load dynamic gallery photos, falling back to defaults.", err);
       }
+      // Shuffle default fallback items on mount if dynamic fetch fails
+      setGalleryItems((prev) => shuffleArray(prev));
     }
     fetchPhotos();
   }, []);
