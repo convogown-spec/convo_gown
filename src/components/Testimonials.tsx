@@ -22,9 +22,9 @@ export default function Testimonials() {
       stars: 5,
     },
     {
-      name: "Josmy",
+      name: "Josmi Jose",
       role: "Teacher",
-      institution: "St. Mary's School, Kandassankadavu",
+      institution: "SH of Mary's CGHS, Kandassamkadavu",
       quote: "The kid and school sized gowns were absolutely perfect and durable for our secondary students. Excellent delivery service and perfect fits for active graduation ceremony days.",
       stars: 5,
     },
