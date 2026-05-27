@@ -181,7 +181,7 @@ export default function RootLayout({
         />
         {/* Dynamic GA4 Tag */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-SEO55CONVO"
+          src="https://www.googletagmanager.com/gtag/js?id=G-D91T1FLX1S"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -189,7 +189,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-SEO55CONVO');
+            gtag('config', 'G-D91T1FLX1S');
           `}
         </Script>
         {/* Microsoft Clarity */}
