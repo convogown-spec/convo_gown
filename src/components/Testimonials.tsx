@@ -13,6 +13,7 @@ export default function Testimonials() {
       institution: "MBITS Kothamangalam",
       quote: "Convo Gown delivered custom gowns precisely to our regulated discipline specifications. Their 48-hour coordination and on-site distribution desk made the graduation ceremony absolutely seamless.",
       stars: 5,
+      avatar: "/assets/testimonials/sabeena.png",
     },
     {
       name: "Dr. P A Abdul Samad",
@@ -20,6 +21,7 @@ export default function Testimonials() {
       institution: "GEC Thrissur",
       quote: "The quality of the embroidery stoles and velvet hood linings was outstanding. Every student remarked on the premium weight and feel. Zero inventory errors and zero delays.",
       stars: 5,
+      avatar: "/assets/testimonials/abdul.png",
     },
     {
       name: "Josmi Jose",
@@ -102,7 +104,15 @@ export default function Testimonials() {
               {/* Profile Details */}
               <div className={styles.profile}>
                 <div className={styles.avatar}>
-                  {r.name.charAt(0)}
+                  {r.avatar ? (
+                    <img
+                      src={r.avatar}
+                      alt={r.name}
+                      className={styles.avatarImg}
+                    />
+                  ) : (
+                    r.name.charAt(0)
+                  )}
                 </div>
                 <div className={styles.info}>
                   <cite className={styles.name}>{r.name}</cite>
