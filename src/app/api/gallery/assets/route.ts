@@ -1,14 +1,26 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const assets = db
-      .prepare("SELECT id, image_url FROM gallery_images WHERE category = 'Asset' ORDER BY id DESC")
-      .all();
-    return NextResponse.json(assets);
-  } catch (error) {
-    console.error("GET assets error:", error);
-    return NextResponse.json({ error: "Failed to fetch assets" }, { status: 500 });
+    const assets = await prisma.galleryImage.findMany({
+      where: { category: "Asset" },
+      orderBy: { created_at: "desc" },
+    });
+
+    const response = assets.map((item) => ({
+      id: item.id,
+      image_url: item.image_url,
+    }));
+
+    return NextResponse.json(response);
+  } catch (error: any) {
+    console.error("Error fetching assets:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch asset images." },
+      { status: 500 }
+    );
   }
 }

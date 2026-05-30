@@ -1,115 +1,140 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import fs from "fs";
-import path from "path";
-import db from "@/lib/db";
+import { NextRequest, NextResponse } from "next/server";
+import { getSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
-async function isAuthenticated() {
-  const cookieStore = await cookies();
-  const sessionId = cookieStore.get("admin_session")?.value;
+export const dynamic = "force-dynamic";
 
-  if (!sessionId) return false;
-
-  const session = db
-    .prepare("SELECT * FROM admin_sessions WHERE session_id = ? AND expires_at > ?")
-    .get(sessionId, Date.now());
-
-  return !!session;
-}
-
-// GET /api/admin/gallery - List all uploaded images
+/**
+ * GET /api/admin/gallery
+ * Returns all gallery images stored in PostgreSQL.
+ */
 export async function GET() {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
+  }
+
   try {
-    if (!(await isAuthenticated())) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const images = db
-      .prepare("SELECT * FROM gallery_images ORDER BY id DESC")
-      .all();
-
+    const images = await prisma.galleryImage.findMany({
+      orderBy: { created_at: "desc" },
+    });
     return NextResponse.json(images);
-  } catch (error) {
-    console.error("Fetch gallery images error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Failed to list gallery images:", error);
+    return NextResponse.json(
+      { error: "Failed to list gallery images." },
+      { status: 500 }
+    );
   }
 }
 
-// POST /api/admin/gallery - Upload image
-export async function POST(req: Request) {
-  try {
-    if (!(await isAuthenticated())) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+/**
+ * POST /api/admin/gallery
+ * Validates, uploads an image to Cloudinary, and saves metadata in PostgreSQL.
+ */
+export async function POST(req: NextRequest) {
+  // 1. Authenticate request
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
+  }
 
+  try {
     const formData = await req.formData();
-    const file = formData.get("image") as File | null;
+    const image = formData.get("image") as File | null;
     const category = formData.get("category") as string | null;
 
-    // 1. Basic validation
-    if (!file || !category) {
-      return NextResponse.json({ error: "Missing required fields (image and category)" }, { status: 400 });
-    }
-
-    if (category !== "Asset" && category !== "Happy Customer") {
-      return NextResponse.json({ error: "Invalid category. Must be 'Asset' or 'Happy Customer'." }, { status: 400 });
-    }
-
-    // 2. Validate image type (extension & mime type)
-    const allowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
-    const allowedMimeTypes = ["image/jpeg", "image/png", "image/webp"];
-
-    const ext = path.extname(file.name).toLowerCase();
-    if (!allowedExtensions.includes(ext) || !allowedMimeTypes.includes(file.type)) {
+    // 2. Validate field existence
+    if (!image || !category) {
       return NextResponse.json(
-        { error: "Invalid file type. Only JPG, JPEG, PNG, and WEBP images are allowed." },
+        { error: "Image file and category are required." },
         { status: 400 }
       );
     }
 
-    // 3. Validate size (Max 15MB)
-    const maxSizeBytes = 15 * 1024 * 1024;
-    if (file.size > maxSizeBytes) {
-      return NextResponse.json({ error: "File too large. Maximum allowed size is 15 MB." }, { status: 400 });
+    // 3. Validate category values
+    if (category !== "Asset" && category !== "Happy Customer") {
+      return NextResponse.json(
+        { error: "Category must be either 'Asset' or 'Happy Customer'." },
+        { status: 400 }
+      );
     }
 
-    // 4. Generate unique filename: prefix_timestamp.extension
-    const timestamp = Math.floor(Date.now() / 1000);
+    // 4. Validate file size (Maximum 15 MB)
+    const MAX_SIZE = 15 * 1024 * 1024;
+    if (image.size > MAX_SIZE) {
+      return NextResponse.json(
+        { error: "File size exceeds the 15 MB limit." },
+        { status: 400 }
+      );
+    }
+
+    // 5. Validate file extension and content type
+    const originalName = image.name;
+    const ext = originalName.split(".").pop()?.toLowerCase();
+    const allowedExtensions = ["jpg", "jpeg", "png", "webp"];
+
+    if (!ext || !allowedExtensions.includes(ext)) {
+      return NextResponse.json(
+        { error: "Unsupported file format. Allowed formats: jpg, jpeg, png, webp." },
+        { status: 400 }
+      );
+    }
+
+    const mimeType = image.type;
+    if (!mimeType.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "File must be an image type." },
+        { status: 400 }
+      );
+    }
+
+    // Reject archive/executable formats explicitly to be absolutely safe
+    const rejectedExtensions = ["exe", "js", "php", "sh", "bat", "zip"];
+    if (rejectedExtensions.includes(ext)) {
+      return NextResponse.json(
+        { error: "File format is rejected for security reasons." },
+        { status: 400 }
+      );
+    }
+
+    // 6. Convert image to buffer
+    const arrayBuffer = await image.arrayBuffer();
+    const fileBuffer = Buffer.from(arrayBuffer);
+
+    // 7. Generate a unique filename using specifications
     const prefix = category === "Asset" ? "asset" : "customer";
-    const uniqueFilename = `${prefix}_${timestamp}${ext}`;
+    const timestamp = Math.floor(Date.now() / 1000);
+    const uniquePublicId = `${prefix}_${timestamp}`;
 
-    // 5. Ensure directory exists
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "gallery");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    // 8. Stream upload to Cloudinary
+    let uploadResult;
+    try {
+      uploadResult = await uploadToCloudinary(fileBuffer, uniquePublicId);
+    } catch (uploadError: any) {
+      console.error("Cloudinary upload failed:", uploadError);
+      return NextResponse.json(
+        { error: "Failed to upload image to Cloudinary storage." },
+        { status: 502 }
+      );
     }
 
-    const filePath = path.join(uploadDir, uniqueFilename);
-
-    // Save physical file
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    fs.writeFileSync(filePath, buffer);
-
-    // 6. Save in database
-    const imageUrl = `/uploads/gallery/${uniqueFilename}`;
-    const createdAt = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-
-    const result = db
-      .prepare("INSERT INTO gallery_images (image_url, category, created_at) VALUES (?, ?, ?)")
-      .run(imageUrl, category, createdAt);
-
-    return NextResponse.json({
-      success: true,
-      image: {
-        id: result.lastInsertRowid,
-        image_url: imageUrl,
+    // 9. Save image metadata in PostgreSQL
+    const savedImage = await prisma.galleryImage.create({
+      data: {
+        image_url: uploadResult.secure_url,
+        cloudinary_public_id: uploadResult.public_id,
         category,
-        created_at: createdAt,
       },
     });
-  } catch (error) {
-    console.error("Upload error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+
+    return NextResponse.json(savedImage);
+  } catch (error: any) {
+    console.error("Error creating gallery image:", error);
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 }
+    );
   }
 }

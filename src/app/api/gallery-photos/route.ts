@@ -1,35 +1,39 @@
 import { NextResponse } from "next/server";
-import path from "path";
 import registry from "@/data/gallery-images.json";
-import db from "@/lib/db";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    // 1. Fetch dynamic database-backed images
-    const dbImages = db
-      .prepare("SELECT * FROM gallery_images ORDER BY id DESC")
-      .all() as Array<{ id: number; image_url: string; category: string; created_at: string }>;
+    let dbImages: any[] = [];
+    try {
+      dbImages = await prisma.galleryImage.findMany({
+        orderBy: { created_at: "desc" },
+      });
+    } catch (dbError) {
+      console.error("PostgreSQL fetch failed, falling back to static registry:", dbError);
+    }
 
-    // 2. Map database images to the structure expected by the frontend
-    const dynamicItems = dbImages.map((img) => {
-      const filename = path.basename(img.image_url);
-      const ext = path.extname(filename);
-      const title = path.basename(filename, ext)
+    // Map DB images to match existing frontend categories ('Our Assets' & 'Happy Customers')
+    const mappedDbImages = dbImages.map((item) => {
+      // Build friendly title
+      const friendlyTitle = item.cloudinary_public_id
         .replace(/[_-]/g, " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase());
+        .replace(/\b\w/g, (char: string) => char.toUpperCase());
 
       return {
-        title,
-        category: img.category === "Asset" ? "Our Assets" : "Happy Customers",
-        image: img.image_url,
+        title: friendlyTitle,
+        category: item.category === "Asset" ? "Our Assets" : "Happy Customers",
+        image: item.image_url,
       };
     });
 
-    // 3. Combine static registry items with dynamic items (dynamic items first for newest visibility)
-    const combined = [...dynamicItems, ...registry];
+    // Merge database uploads at the top so new items appear first
+    const mergedList = [...mappedDbImages, ...registry];
 
-    return NextResponse.json(combined);
-  } catch (error) {
+    return NextResponse.json(mergedList);
+  } catch (error: any) {
     console.error("Error reading gallery photos:", error);
     return NextResponse.json(
       { error: "Failed to list gallery photos." },
@@ -37,5 +41,3 @@ export async function GET() {
     );
   }
 }
-
-

@@ -1,14 +1,26 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
+import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const customers = db
-      .prepare("SELECT id, image_url FROM gallery_images WHERE category = 'Happy Customer' ORDER BY id DESC")
-      .all();
-    return NextResponse.json(customers);
-  } catch (error) {
-    console.error("GET customers error:", error);
-    return NextResponse.json({ error: "Failed to fetch happy customers" }, { status: 500 });
+    const customers = await prisma.galleryImage.findMany({
+      where: { category: "Happy Customer" },
+      orderBy: { created_at: "desc" },
+    });
+
+    const response = customers.map((item) => ({
+      id: item.id,
+      image_url: item.image_url,
+    }));
+
+    return NextResponse.json(response);
+  } catch (error: any) {
+    console.error("Error fetching customer images:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch happy customer images." },
+      { status: 500 }
+    );
   }
 }

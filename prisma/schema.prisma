@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model GalleryImage {
+  id                   Int      @id @default(autoincrement())
+  image_url            String
+  cloudinary_public_id String
+  category             String   // "Asset" or "Happy Customer"
+  created_at           DateTime @default(now())
+
+  @@map("gallery_images")
+}
+
+model LoginAttempt {
+  ip           String   @id
+  attempts     Int      @default(1)
+  last_attempt DateTime @default(now())
+
+  @@map("login_attempts")
+}
