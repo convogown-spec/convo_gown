@@ -31,7 +31,7 @@ export async function GET() {
 
 /**
  * POST /api/admin/gallery
- * Validates, uploads an image to Cloudinary, and saves metadata in PostgreSQL.
+ * Saves image metadata in PostgreSQL.
  */
 export async function POST(req: NextRequest) {
   // 1. Authenticate request
@@ -41,14 +41,13 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const formData = await req.formData();
-    const image = formData.get("image") as File | null;
-    const category = formData.get("category") as string | null;
+    const body = await req.json().catch(() => ({}));
+    const { image_url, cloudinary_public_id, category } = body;
 
     // 2. Validate field existence
-    if (!image || !category) {
+    if (!image_url || !cloudinary_public_id || !category) {
       return NextResponse.json(
-        { error: "Image file and category are required." },
+        { error: "Image URL, Cloudinary Public ID, and Category are required." },
         { status: 400 }
       );
     }
@@ -61,70 +60,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Validate file size (Maximum 15 MB)
-    const MAX_SIZE = 15 * 1024 * 1024;
-    if (image.size > MAX_SIZE) {
-      return NextResponse.json(
-        { error: "File size exceeds the 15 MB limit." },
-        { status: 400 }
-      );
-    }
-
-    // 5. Validate file extension and content type
-    const originalName = image.name;
-    const ext = originalName.split(".").pop()?.toLowerCase();
-    const allowedExtensions = ["jpg", "jpeg", "png", "webp"];
-
-    if (!ext || !allowedExtensions.includes(ext)) {
-      return NextResponse.json(
-        { error: "Unsupported file format. Allowed formats: jpg, jpeg, png, webp." },
-        { status: 400 }
-      );
-    }
-
-    const mimeType = image.type;
-    if (!mimeType.startsWith("image/")) {
-      return NextResponse.json(
-        { error: "File must be an image type." },
-        { status: 400 }
-      );
-    }
-
-    // Reject archive/executable formats explicitly to be absolutely safe
-    const rejectedExtensions = ["exe", "js", "php", "sh", "bat", "zip"];
-    if (rejectedExtensions.includes(ext)) {
-      return NextResponse.json(
-        { error: "File format is rejected for security reasons." },
-        { status: 400 }
-      );
-    }
-
-    // 6. Convert image to buffer
-    const arrayBuffer = await image.arrayBuffer();
-    const fileBuffer = Buffer.from(arrayBuffer);
-
-    // 7. Generate a unique filename using specifications
-    const prefix = category === "Asset" ? "asset" : "customer";
-    const timestamp = Math.floor(Date.now() / 1000);
-    const uniquePublicId = `${prefix}_${timestamp}`;
-
-    // 8. Stream upload to Cloudinary
-    let uploadResult;
-    try {
-      uploadResult = await uploadToCloudinary(fileBuffer, uniquePublicId);
-    } catch (uploadError: any) {
-      console.error("Cloudinary upload failed:", uploadError);
-      return NextResponse.json(
-        { error: "Failed to upload image to Cloudinary storage." },
-        { status: 502 }
-      );
-    }
-
-    // 9. Save image metadata in PostgreSQL
+    // 4. Save image metadata in PostgreSQL
     const savedImage = await prisma.galleryImage.create({
       data: {
-        image_url: uploadResult.secure_url,
-        cloudinary_public_id: uploadResult.public_id,
+        image_url,
+        cloudinary_public_id,
         category,
       },
     });

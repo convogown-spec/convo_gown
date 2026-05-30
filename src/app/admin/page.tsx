@@ -150,7 +150,7 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Form Submit: Stream Upload
+  // Form Submit: Direct Signed Client-Side Upload
   const handleUploadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedFile) {
@@ -161,26 +161,74 @@ export default function AdminDashboardPage() {
     setIsUploading(true);
     setFeedback(null);
 
-    const formData = new FormData();
-    formData.append("image", selectedFile);
-    formData.append("category", uploadCategory);
-
     try {
-      const res = await fetch("/api/admin/gallery", {
+      // 1. Fetch secure signature from Next.js server
+      const sigRes = await fetch("/api/admin/cloudinary-signature", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category: uploadCategory }),
       });
 
-      const data = await res.json();
+      const sigData = await sigRes.json();
 
-      if (!res.ok) {
-        triggerFeedback("error", data.error || "Failed to upload image.");
+      if (!sigRes.ok) {
+        triggerFeedback("error", sigData.error || "Failed to generate secure upload credentials.");
+        setIsUploading(false);
+        return;
+      }
+
+      // 2. Upload file directly to Cloudinary's high-speed endpoint
+      const cldFormData = new FormData();
+      cldFormData.append("file", selectedFile);
+      cldFormData.append("api_key", sigData.api_key);
+      cldFormData.append("timestamp", sigData.timestamp.toString());
+      cldFormData.append("signature", sigData.signature);
+      cldFormData.append("public_id", sigData.public_id);
+      cldFormData.append("folder", sigData.folder);
+
+      const cldRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${sigData.cloud_name}/image/upload`,
+        {
+          method: "POST",
+          body: cldFormData,
+        }
+      );
+
+      const cldData = await cldRes.json();
+
+      if (!cldRes.ok) {
+        triggerFeedback(
+          "error",
+          cldData.error?.message || "Failed to upload image directly to Cloudinary."
+        );
+        setIsUploading(false);
+        return;
+      }
+
+      // 3. Register the secure URL and ID in PostgreSQL database
+      const dbRes = await fetch("/api/admin/gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          image_url: cldData.secure_url,
+          cloudinary_public_id: cldData.public_id,
+          category: uploadCategory,
+        }),
+      });
+
+      const dbData = await dbRes.json();
+
+      if (!dbRes.ok) {
+        triggerFeedback("error", dbData.error || "Failed to register image in database.");
         setIsUploading(false);
         return;
       }
 
       // Success
-      triggerFeedback("success", `Successfully uploaded image: ${data.cloudinary_public_id.split("/").pop()} to Cloudinary and registered in database.`);
+      triggerFeedback(
+        "success",
+        `Successfully uploaded image: ${dbData.cloudinary_public_id.split("/").pop()} to Cloudinary and registered in database.`
+      );
       removeSelectedFile();
       fetchStats();
       fetchGallery();
